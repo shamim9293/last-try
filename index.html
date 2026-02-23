@@ -1,283 +1,146 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Garjonbunia Pro Scorer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobCanvas | Beginner Project</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        :root {
-            --primary: #075e54;
-            --secondary: #128c7e;
-            --accent: #25d366;
-            --bg: #ece5dd;
-            --white: #ffffff;
-            --dark: #075e54;
-        }
-
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-
-        /* App Header */
-        .header {
-            background-color: var(--primary);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            flex-shrink: 0;
-        }
-
-        /* Score Display Area */
-        .score-board {
-            background: var(--white);
-            margin: 10px;
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-
-        .main-score {
-            font-size: 50px;
-            font-weight: 900;
-            color: var(--dark);
-            margin: 5px 0;
-        }
-
-        .overs-info {
-            font-size: 18px;
-            color: #666;
-            font-weight: bold;
-        }
-
-        .target-status {
-            background: #fff3cd;
-            color: #856404;
-            padding: 8px;
-            border-radius: 8px;
-            margin-top: 10px;
-            font-size: 14px;
-            display: none;
-            border: 1px solid #ffeeba;
-        }
-
-        /* Stats Table */
-        .stats-container {
-            margin: 0 10px;
-            flex-grow: 1;
-            overflow-y: auto;
-        }
-
-        table {
-            width: 100%;
-            background: white;
-            border-radius: 10px;
-            border-collapse: collapse;
-            overflow: hidden;
-            font-size: 14px;
-        }
-
-        th {
-            background: #f1f1f1;
-            padding: 10px;
-            text-align: left;
-            color: #555;
-        }
-
-        td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .active-player {
-            background-color: #e8f5e9;
-            border-left: 5px solid var(--accent);
-            font-weight: bold;
-        }
-
-        /* Bowler Area */
-        .bowler-box {
-            background: #f8f9fa;
-            padding: 10px;
-            border-top: 1px solid #ddd;
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-        }
-
-        /* Keypad */
-        .keypad {
-            background: #d1d5db;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2px;
-            padding: 5px;
-            flex-shrink: 0;
-        }
-
-        .key {
-            background: white;
-            border: none;
-            padding: 18px 0;
-            font-size: 20px;
-            font-weight: bold;
-            color: #333;
-            transition: background 0.1s;
-        }
-
-        .key:active {
-            background: #bbb;
-        }
-
-        .key-extra { color: #2563eb; }
-        .key-out { background: #ef4444; color: white; grid-column: span 2; }
-        .key-undo { background: #4b5563; color: white; grid-column: span 2; }
-        .key-action { background: var(--secondary); color: white; grid-column: span 2; }
-
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body>
+<body class="bg-gray-100 p-5 md:p-10">
 
-<div class="header" id="team-name" onclick="editName('team-name')">GARJONBUNIA CRICKET</div>
-
-<div class="score-board">
-    <div class="main-score"><span id="tr">0</span>/<span id="tw">0</span></div>
-    <div class="overs-info">Over: <span id="ov">0</span>.<span id="bl">0</span> / <span id="max-ov">0</span></div>
-    <div id="target-ui" class="target-status"></div>
-</div>
-
-<div class="stats-container">
-    <table>
-        <tr><th>Batsman</th><th>R</th><th>B</th><th>4s</th><th>6s</th></tr>
-        <tr id="row1" class="active-player" onclick="editName('n1')"><td id="n1">Striker*</td><td id="r1">0</td><td id="b1">0</td><td id="f1">0</td><td id="s1">0</td></tr>
-        <tr id="row2" onclick="editName('n2')"><td id="n2">Non-Striker</td><td id="r2">0</td><td id="b2">0</td><td id="f2">0</td><td id="s2">0</td></tr>
-    </table>
-    
-    <div class="bowler-box">
-        <span onclick="editName('bw-name')">Bowler: <b id="bw-name">Bowler</b></span>
-        <span>O: <b id="bw-ov">0.0</b> R: <b id="bw-r">0</b> W: <b id="bw-w">0</b></span>
+    <div class="max-w-2xl mx-auto bg-white p-6 rounded-2xl shadow-sm mb-8 flex justify-around border border-gray-200">
+        <div class="text-center">
+            <p class="text-gray-400 text-xs uppercase font-bold tracking-wider">Total</p>
+            <p id="total-count" class="text-2xl font-black text-slate-800">0</p>
+        </div>
+        <div class="text-center">
+            <p class="text-green-400 text-xs uppercase font-bold tracking-wider">Interview</p>
+            <p id="interview-count" class="text-2xl font-black text-green-600">0</p>
+        </div>
+        <div class="text-center">
+            <p class="text-red-400 text-xs uppercase font-bold tracking-wider">Rejected</p>
+            <p id="rejected-count" class="text-2xl font-black text-red-600">0</p>
+        </div>
     </div>
-</div>
 
-<div class="keypad">
-    <button class="key" onclick="addRun(0)">0</button>
-    <button class="key" onclick="addRun(1)">1</button>
-    <button class="key" onclick="addRun(2)">2</button>
-    <button class="key" onclick="addRun(3)">3</button>
-    <button class="key" onclick="addRun(4)">4</button>
-    <button class="key" onclick="addRun(6)">6</button>
-    <button class="key key-extra" onclick="extra('WD')">WD</button>
-    <button class="key key-extra" onclick="extra('NB')">NB</button>
-    <button class="key key-undo" onclick="doUndo()">UNDO</button>
-    <button class="key key-out" onclick="outPlayer()">WICKET</button>
-    <button class="key key-action" onclick="swapStrike()">SWAP</button>
-    <button class="key key-action" onclick="finishInnings()">FINISH INNINGS</button>
-</div>
-
-<script>
-    let d = { tr:0, tw:0, b:0, s:true, b1:{r:0, b:0, f:0, s:0}, b2:{r:0, b:0, f:0, s:0}, br:0, bb:0, bw:0, target:null, maxOvers:0 };
-    let logs = [];
-
-    window.onload = function() {
-        let ov = prompt("Match কয় ওভারের হবে?", "10");
-        d.maxOvers = parseInt(ov) || 10;
-        document.getElementById('max-ov').innerText = d.maxOvers;
-        updateUI();
-    };
-
-    function updateUI() {
-        document.getElementById('tr').innerText = d.tr;
-        document.getElementById('tw').innerText = d.tw;
-        document.getElementById('ov').innerText = Math.floor(d.b / 6);
-        document.getElementById('bl').innerText = d.b % 6;
+    <div class="max-w-2xl mx-auto mb-6">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-bold text-slate-700">Available Jobs</h2>
+            <span class="bg-white px-3 py-1 rounded-full border text-xs font-bold text-slate-500">
+                Jobs: <span id="current-tab-count" class="text-indigo-600">0</span>
+            </span>
+        </div>
         
-        document.getElementById('r1').innerText = d.b1.r; document.getElementById('b1').innerText = d.b1.b;
-        document.getElementById('f1').innerText = d.b1.f; document.getElementById('s1').innerText = d.b1.s;
-        document.getElementById('r2').innerText = d.b2.r; document.getElementById('b2').innerText = d.b2.b;
-        document.getElementById('f2').innerText = d.b2.f; document.getElementById('s2').innerText = d.b2.s;
-        
-        document.getElementById('bw-ov').innerText = Math.floor(d.bb / 6) + "." + (d.bb % 6);
-        document.getElementById('bw-r').innerText = d.br;
-        document.getElementById('bw-w').innerText = d.bw;
+        <div class="flex gap-2 bg-gray-200 p-1 rounded-xl w-fit">
+            <button onclick="changeTab('All', this)" class="tab-btn px-4 py-2 rounded-lg bg-white shadow text-sm font-bold transition-all">All</button>
+            <button onclick="changeTab('Interview', this)" class="tab-btn px-4 py-2 rounded-lg text-sm font-bold text-slate-500 transition-all">Interview</button>
+            <button onclick="changeTab('Rejected', this)" class="tab-btn px-4 py-2 rounded-lg text-sm font-bold text-slate-500 transition-all">Rejected</button>
+        </div>
+    </div>
 
-        document.getElementById('row1').className = d.s ? "active-player" : "";
-        document.getElementById('row2').className = !d.s ? "active-player" : "";
+    <div id="job-list" class="max-w-2xl mx-auto space-y-5">
+        </div>
 
-        if(d.target) {
-            let ui = document.getElementById('target-ui');
-            ui.style.display = "block";
-            let need = d.target - d.tr;
-            let bLeft = (d.maxOvers * 6) - d.b;
-            if(need <= 0) {
-                ui.innerHTML = "🎉 Batting Team Won! 🎉";
-                alert("Congratulations!");
+    <div id="no-jobs" class="hidden text-center py-20 bg-white max-w-2xl mx-auto rounded-3xl border-2 border-dashed border-gray-200">
+        <div class="bg-gray-50 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i data-lucide="ghost" class="text-gray-300"></i>
+        </div>
+        <h3 class="text-lg font-bold text-slate-400">No Jobs Available</h3>
+        <p class="text-slate-300 text-sm">Category is currently empty.</p>
+    </div>
+
+    <script>
+        let jobs = [
+            { id: 1, company: "Google", role: "Software Engineer", loc: "Remote", pay: "$120k", desc: "Work on world-class search engines.", status: "All" },
+            { id: 2, company: "Meta", role: "UI Designer", loc: "USA", pay: "$110k", desc: "Design the future of social apps.", status: "All" },
+            { id: 3, company: "Amazon", role: "Backend Dev", loc: "Remote", pay: "$105k", desc: "Scaling cloud infrastructure.", status: "All" },
+            { id: 4, company: "Netflix", role: "Data Scientist", loc: "Hybrid", pay: "$95k", desc: "Content recommendation systems.", status: "All" },
+            { id: 5, company: "Tesla", role: "AI Engineer", loc: "Austin", pay: "$130k", desc: "Self-driving car algorithms.", status: "All" },
+            { id: 6, company: "Spotify", role: "App Developer", loc: "Remote", pay: "$100k", desc: "Developing music experiences.", status: "All" },
+            { id: 7, company: "Shopify", role: "Frontend Dev", loc: "Canada", pay: "$115k", desc: "Building e-commerce tools.", status: "All" },
+            { id: 8, company: "Airbnb", role: "UX Researcher", loc: "Hybrid", pay: "$125k", desc: "Understanding traveler needs.", status: "All" }
+        ];
+
+        let currentTab = "All";
+
+        function showJobs() {
+            const list = document.getElementById('job-list');
+            const emptyMsg = document.getElementById('no-jobs');
+            
+            let filtered = currentTab === "All" ? jobs : jobs.filter(j => j.status === currentTab);
+
+            document.getElementById('total-count').innerText = jobs.length;
+            document.getElementById('interview-count').innerText = jobs.filter(j => j.status === 'Interview').length;
+            document.getElementById('rejected-count').innerText = jobs.filter(j => j.status === 'Rejected').length;
+            document.getElementById('current-tab-count').innerText = filtered.length;
+
+            if (filtered.length === 0) {
+                list.innerHTML = "";
+                emptyMsg.classList.remove('hidden');
             } else {
-                ui.innerText = "Target: "+d.target+" | Need "+need+" in "+bLeft+" balls";
+                emptyMsg.classList.add('hidden');
+                list.innerHTML = filtered.map(job => `
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm relative group hover:shadow-md transition-all">
+                        <button onclick="deleteJob(${job.id})" class="absolute top-4 right-4 text-gray-300 hover:text-red-500">
+                            <i data-lucide="trash-2" class="w-5 h-5"></i>
+                        </button>
+
+                        <div class="mb-5">
+                            <h3 class="text-lg font-bold text-slate-800">${job.role}</h3>
+                            <p class="text-indigo-600 font-bold text-sm mb-2">${job.company}</p>
+                            <div class="flex gap-3 text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-3">
+                                <span>${job.loc}</span> • <span>${job.pay}</span>
+                            </div>
+                            <p class="text-slate-500 text-sm leading-relaxed">${job.desc}</p>
+                        </div>
+
+                        <div class="flex gap-2 pt-4 border-t border-gray-50">
+                            <button onclick="setStatus(${job.id}, 'Interview')" 
+                                class="flex-1 py-2 text-xs font-bold rounded-xl transition-all border-2 
+                                ${job.status === 'Interview' ? 'bg-green-500 border-green-500 text-white' : 'border-green-500 text-green-500 hover:bg-green-50' }">
+                                Interview
+                            </button>
+                            <button onclick="setStatus(${job.id}, 'Rejected')" 
+                                class="flex-1 py-2 text-xs font-bold rounded-xl transition-all border-2 
+                                ${job.status === 'Rejected' ? 'bg-red-500 border-red-500 text-white' : 'border-red-500 text-red-500 hover:bg-red-50' }">
+                                Rejected
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            lucide.createIcons();
+        }
+
+        function setStatus(id, s) {
+            jobs = jobs.map(j => j.id === id ? {...j, status: s} : j);
+            showJobs();
+        }
+
+        function changeTab(tab, el) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('bg-white', 'shadow', 'text-slate-800');
+                b.classList.add('text-slate-500');
+            });
+            el.classList.add('bg-white', 'shadow', 'text-slate-800');
+            el.classList.remove('text-slate-500');
+            showJobs();
+        }
+
+        function deleteJob(id) {
+            if(confirm("Delete this?")) {
+                jobs = jobs.filter(j => j.id !== id);
+                showJobs();
             }
         }
-    }
 
-    function addRun(r) {
-        logs.push(JSON.stringify(d));
-        d.tr += r; d.b++; d.br += r; d.bb++;
-        let p = d.s ? d.b1 : d.b2;
-        p.r += r; p.b++;
-        if(r===4) p.f++; if(r===6) p.s++;
-        if(r%2 !== 0) d.s = !d.s;
-        checkOver();
-        updateUI();
-    }
-
-    function extra(t) {
-        logs.push(JSON.stringify(d));
-        d.tr++; d.br++; updateUI();
-    }
-
-    function checkOver() {
-        if(d.b % 6 === 0 && d.b !== 0) {
-            d.s = !d.s;
-            setTimeout(() => {
-                let n = prompt("ওভার শেষ! বোলারের নাম বলুন:");
-                if(n) document.getElementById('bw-name').innerText = n;
-                d.br = 0; d.bb = 0; d.bw = 0; updateUI();
-            }, 100);
-        }
-    }
-
-    function outPlayer() {
-        logs.push(JSON.stringify(d));
-        d.tw++; d.b++; d.bb++; d.bw++;
-        let n = prompt("নতুন ব্যাটসম্যানের নাম:");
-        if(d.s) { d.b1 = {r:0, b:0, f:0, s:0}; document.getElementById('n1').innerText = (n || "Striker")+"*"; }
-        else { d.b2 = {r:0, b:0, f:0, s:0}; document.getElementById('n2').innerText = (n || "Non-Striker"); }
-        if(d.b % 6 === 0) checkOver();
-        updateUI();
-    }
-
-    function doUndo() { if(logs.length > 0) { d = JSON.parse(logs.pop()); updateUI(); } }
-    function swapStrike() { d.s = !d.s; updateUI(); }
-    function editName(id) { let n = prompt("পরিবর্তন করুন:"); if(n) document.getElementById(id).innerText = n; }
-    
-    function finishInnings() {
-        d.target = d.tr + 1;
-        alert("ইনিংস শেষ! টার্গেট: " + d.target);
-        d.tr=0; d.tw=0; d.b=0; d.b1={r:0,b:0,f:0,s:0}; d.b2={r:0,b:0,f:0,s:0}; updateUI();
-    }
-</script>
-
+        window.onload = showJobs;
+    </script>
 </body>
 </html>
